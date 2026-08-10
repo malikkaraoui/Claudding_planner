@@ -45,6 +45,8 @@ export interface DayComputation {
   segments: Segment[];       // hôtel → 1 → … → n → hôtel
   stops: StopTiming[];
   totalWalkMin: number;      // somme des usedMin
+  totalKm: number;           // distance totale de la boucle (hôtel → … → hôtel)
+  walkKm: number;            // dont segments faits à pied (métro non conseillé)
   totalActivityMin: number;
   totalMin: number;
   budgetPct: number;         // (total / budget) × 100
@@ -99,12 +101,16 @@ export function computeDay(trip: TripState, day: DayPlan): DayComputation {
   const endMin = items.length ? t + (segments[segments.length - 1]?.usedMin ?? 0) : startMin;
 
   const totalWalkMin = segments.reduce((acc, sg) => acc + sg.usedMin, 0);
+  const totalKm = segments.reduce((acc, sg) => acc + sg.km, 0);
+  const walkKm = segments.reduce((acc, sg) => acc + (sg.metroAdvised ? 0 : sg.km), 0);
   const totalActivityMin = items.reduce((acc, a) => acc + a.durationMin, 0);
   const totalMin = totalWalkMin + totalActivityMin;
   return {
     segments,
     stops,
     totalWalkMin,
+    totalKm,
+    walkKm,
     totalActivityMin,
     totalMin,
     budgetPct: day.budgetMin > 0 ? (totalMin / day.budgetMin) * 100 : 0,

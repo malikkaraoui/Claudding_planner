@@ -121,6 +121,12 @@ export function Itinerary({ trip, day, accent }: { trip: TripState; day: DayPlan
         <div className="flex justify-between text-xs text-white/70 mb-1">
           <span>
             Activités {formatDuration(c.totalActivityMin)} + trajets {formatDuration(c.totalWalkMin)}
+            {c.totalKm > 0 && (
+              <span className="text-white/50">
+                {' '}· 📏 {c.totalKm.toFixed(1)} km
+                {c.walkKm < c.totalKm - 0.05 && <> (dont 🚶 {c.walkKm.toFixed(1)} km)</>}
+              </span>
+            )}
           </span>
           <span style={{ color: gaugeColor(c.budgetPct) }} className="font-semibold">
             {formatDuration(c.totalMin)} / {formatDuration(day.budgetMin)}

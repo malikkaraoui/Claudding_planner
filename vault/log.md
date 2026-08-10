@@ -14,3 +14,6 @@ Suppression du jour actif directement depuis la TopBar (à côté du +), avec co
 
 ## 2026-08-10 — Hôtel éditable (nom + adresse géocodée)
 Section 🛏️ Hôtel dans le volet Réglages : nom libre + adresse avec autocomplétion Nominatim ; la sélection d'un résultat recale lat/lng (le marqueur carte suit). Champ `hotel.address` optionnel — pas de migration nécessaire. Vérifié en headless : nom + « citizenM Tower of London » → coords 51.510/-0.076 persistées.
+
+## 2026-08-10 — Distance totale par journée
+`computeDay` expose `totalKm` (boucle hôtel → activités → hôtel, détour urbain inclus) et `walkKm` (segments à pied uniquement). Affiché dans le pied de l'itinéraire : « 📏 X km (dont 🚶 Y km) ». Vérifié en headless : J1 = 5,4 km dont 2,7 à pied, cohérent avec la somme des segments.
