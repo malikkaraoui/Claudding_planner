@@ -1,0 +1,6 @@
+node_modules/
+dist/
+tsconfig.tsbuildinfo
+.gstack/
+.DS_Store
+data/trip.json
