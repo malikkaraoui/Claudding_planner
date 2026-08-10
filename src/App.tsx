@@ -4,11 +4,13 @@ import { TopBar } from './components/TopBar';
 import { MapView } from './components/MapView';
 import { Itinerary } from './components/Itinerary';
 import { Catalog } from './components/Catalog';
+import { SettingsPanel } from './components/SettingsPanel';
 import { DAY_COLORS } from './dayColors';
 
 export default function App() {
   const { trip, error, update, resetToSeed } = useTrip();
   const [activeDayId, setActiveDayId] = useState<string | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
 
   // Jour actif par défaut / si le jour actif a été supprimé (même depuis le terminal)
   useEffect(() => {
@@ -59,11 +61,13 @@ export default function App() {
 
   return (
     <div className="h-full flex flex-col">
-      <TopBar activeDayId={day.id} onSelectDay={setActiveDayId} onAddDay={addDay} />
+      <TopBar activeDayId={day.id} onSelectDay={setActiveDayId} onAddDay={addDay}
+        onOpenSettings={() => setShowSettings(true)} />
       {error && (
         <div className="bg-red-500/20 text-red-200 text-xs px-4 py-1">{error}</div>
       )}
-      <main className="flex-1 flex min-h-0">
+      <main className="flex-1 flex min-h-0 relative">
+        {showSettings && <SettingsPanel onClose={() => setShowSettings(false)} />}
         <div className="flex-[13] min-w-0 relative">
           <MapView trip={trip} day={day} accent={accent} />
         </div>

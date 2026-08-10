@@ -33,11 +33,39 @@ export interface Settings {
   metroMinPerKm: number;      // + 3 min/km
 }
 
+// --- Paramétrage du séjour (contexte destiné au LLM) ---
+
+export type TravelMode = 'avion' | 'train' | 'bus' | 'voiture' | 'bateau' | 'autre';
+
+export interface TripEndpoint {
+  mode: TravelMode;
+  place: string;              // ex : "Aéroport de Londres-Gatwick (LGW)"
+  lat: number | null;         // déduits du géocodage du lieu
+  lng: number | null;
+  date: string;               // ISO "2026-08-26"
+  time: string;               // "07:35"
+}
+
+export type TransportPref = 'taxi' | 'bus' | 'uber' | 'metro' | 'walk';
+
+export interface TripParams {
+  arrival: TripEndpoint;
+  departure: TripEndpoint;
+  travelers: number;          // nombre de personnes dans le séjour
+  travelersNote?: string;     // ex : "2 adultes, 2 enfants (6 et 9 ans)"
+  purpose?: string;           // but du séjour — oriente les propositions du LLM
+  transport: {
+    modes: Record<TransportPref, boolean>;
+    walkMaxKm: number;        // marche acceptée seulement sous ce seuil (défaut 3 km)
+  };
+}
+
 export interface TripState {
-  schemaVersion: 2;
+  schemaVersion: 3;
   title: string;
   hotel: { title: string; lat: number; lng: number };
   settings: Settings;
+  params: TripParams;
   activities: Record<string, Activity>;
   days: DayPlan[];
 }

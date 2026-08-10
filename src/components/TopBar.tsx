@@ -7,18 +7,20 @@ interface Props {
   activeDayId: string;
   onSelectDay: (id: string) => void;
   onAddDay: () => void;
+  onOpenSettings: () => void;
 }
 
-export function TopBar({ activeDayId, onSelectDay, onAddDay }: Props) {
+export function TopBar({ activeDayId, onSelectDay, onAddDay, onOpenSettings }: Props) {
   const { trip } = useTrip();
   if (!trip) return null;
+  const p = trip.params;
 
   return (
     <header className="glass flex items-center justify-between px-4 py-2 z-[1000] relative">
       <div className="flex items-baseline gap-3">
         <h1 className="text-lg font-semibold tracking-tight">{trip.title}</h1>
         <span className="text-xs text-white/50">
-          {trip.hotel.title} · fuseau {trip.settings.timezone}
+          {trip.hotel.title} · 👥 {p.travelers}{p.purpose ? ` · 🎯 ${p.purpose}` : ''}
         </span>
       </div>
       <nav className="flex items-center gap-2">
@@ -50,6 +52,13 @@ export function TopBar({ activeDayId, onSelectDay, onAddDay }: Props) {
           className="px-2.5 py-1.5 rounded-lg text-white/60 hover:bg-white/10 border border-white/10 text-sm"
         >
           +
+        </button>
+        <button
+          onClick={onOpenSettings}
+          title="Réglages du séjour (arrivée, départ, voyageurs, transports)"
+          className="px-2.5 py-1.5 rounded-lg text-white/70 hover:bg-white/10 border border-white/10 text-sm"
+        >
+          ⚙️
         </button>
       </nav>
     </header>

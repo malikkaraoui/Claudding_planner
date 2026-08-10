@@ -38,7 +38,19 @@ jq '(.days[] | select(.id=="j2").itemIds) += ["britmus"]' data/trip.json > /tmp/
 curl -X DELETE localhost:5173/api/trip
 ```
 
-Tout est modifiable dans le JSON : jours (ajout/suppression, `date`, `label`, `windowStart`, `windowEnd`, `budgetMin`, `note`), activités (`lat`/`lng`, `durationMin`, `notes`), hôtel, `settings` (fuseau `timezone`, coefficients de marche `walkDetourFactor`, `walkMinPerKm`, seuil métro…).
+Tout est modifiable dans le JSON : jours (ajout/suppression, `date`, `label`, `windowStart`, `windowEnd`, `budgetMin`, `note`), activités (`lat`/`lng`, `durationMin`, `notes`), hôtel, `settings` (fuseau `timezone`, coefficients de marche `walkDetourFactor`, `walkMinPerKm`, seuil métro…), et `params` (paramétrage du séjour, voir ci-dessous).
+
+## Phase de paramétrage (`params`) — volet ⚙️ Réglages
+
+Le bouton ⚙️ de la barre du haut ouvre le volet Réglages. Ces champs servent avant tout de **contexte à un LLM** pour rendre ses propositions pertinentes (ex. : pas de visite à 7 km à pied si le but est le repos avec des enfants < 10 ans) :
+
+- **Arrivée / Départ** : mode (✈️ avion, 🚆 train, 🚌 bus, 🚗 voiture, ⛴️ bateau), **lieu** (aéroport, gare, port… champ avec autocomplétion — la localisation `lat`/`lng` est déduite automatiquement via Nominatim), date et heure.
+- **Voyageurs** : nombre de personnes + composition en texte libre (ex. « 2 adultes, 2 enfants de 6 et 9 ans »).
+- **But du séjour** (optionnel) : repos, culture, famille… — oriente les choix de visite que le LLM peut proposer.
+- **Transports acceptés sur place** : 🚶 à pied (seulement sous un seuil, défaut 3 km), 🚇 métro, 🚌 bus, 🚕 taxi, 🚙 Uber/VTC.
+- À venir : budget cible.
+
+Côté API : `GET /api/geocode?q=…` cherche dans Londres ; ajouter `&scope=global` pour une recherche mondiale (aéroports/gares hors de la ville). Les `trip.json` v2 existants sont **migrés automatiquement** (schéma v3, valeurs par défaut du séjour) au premier `GET /api/trip`.
 
 ## Heuristique temps de parcours (cf. cahier des charges §5)
 

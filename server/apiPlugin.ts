@@ -3,6 +3,7 @@ import path from 'node:path';
 import type { Plugin } from 'vite';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { buildSeedTrip } from '../src/seed';
+import { migrateTrip } from '../src/lib/migrate';
 
 // API locale : data/trip.json est la source de vérité, éditable depuis le
 // front (PUT /api/trip), depuis le terminal (édition directe du fichier ou
@@ -52,6 +53,12 @@ export function apiPlugin(): Plugin {
               } catch {
                 return json(res, 500, { error: 'trip.json invalide (JSON corrompu)' });
               }
+              // Migration douce v2 → v3 (ajout de `params`), persistée sur disque
+              const migrated = migrateTrip(trip);
+              if (migrated.changed) {
+                fs.writeFileSync(DATA_FILE, JSON.stringify(migrated.trip, null, 2));
+                return json(res, 200, { rev: fs.statSync(DATA_FILE).mtimeMs, trip: migrated.trip });
+              }
               return json(res, 200, { rev, trip });
             }
             if (req.method === 'PUT') {
@@ -79,9 +86,12 @@ export function apiPlugin(): Plugin {
           // Proxy Nominatim : User-Agent custom obligatoire, max 1 req/s côté usage.
           const q = url.searchParams.get('q');
           if (!q) return json(res, 400, { error: 'Paramètre q manquant' });
+          // scope=global : pas de suffixe ", London" (aéroports, gares, ports…
+          // potentiellement hors de la ville pour les points d'arrivée/départ)
+          const globalScope = url.searchParams.get('scope') === 'global';
           try {
             const r = await fetch(
-              `https://nominatim.openstreetmap.org/search?format=json&limit=5&q=${encodeURIComponent(q + ', London')}`,
+              `https://nominatim.openstreetmap.org/search?format=json&limit=5&q=${encodeURIComponent(globalScope ? q : q + ', London')}`,
               { headers: { 'User-Agent': 'london-trip-planner-local/1.0 (usage personnel)' } }
             );
             if (!r.ok) return json(res, 502, { error: `Nominatim ${r.status}` });

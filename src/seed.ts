@@ -1,4 +1,5 @@
 import type { Activity, TripState } from './types';
+import { defaultParams } from './lib/migrate';
 
 // ⚠️ Coordonnées fournies de mémoire (cf. cahier des charges §8) — à valider à l'usage.
 const catalog: Omit<Activity, 'source'>[] = [
@@ -35,9 +36,10 @@ export function buildSeedTrip(): TripState {
   const activities: TripState['activities'] = {};
   for (const a of catalog) activities[a.id] = { ...a, source: 'catalog' };
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     title: 'Londres 26–29 août',
     hotel: { title: 'Park Plaza London Waterloo', lat: 51.4986, lng: -0.1128 },
+    params: defaultParams(),
     settings: {
       timezone: 'Europe/London',
       walkDetourFactor: 1.3,
