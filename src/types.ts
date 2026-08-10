@@ -63,7 +63,7 @@ export interface TripParams {
 export interface TripState {
   schemaVersion: 3;
   title: string;
-  hotel: { title: string; lat: number; lng: number };
+  hotel: { title: string; address?: string; lat: number; lng: number };
   settings: Settings;
   params: TripParams;
   activities: Record<string, Activity>;

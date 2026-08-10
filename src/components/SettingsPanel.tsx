@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTrip } from '../state';
 import type { TransportPref, TravelMode, TripEndpoint, TripParams } from '../types';
 import { PlaceSearch } from './PlaceSearch';
@@ -78,6 +79,8 @@ function EndpointForm({ title, endpoint, onChange }: {
 // enfants, modes de transport acceptés, seuil de marche…).
 export function SettingsPanel({ onClose }: { onClose: () => void }) {
   const { trip, update } = useTrip();
+  // Adresse retapée sans sélection dans la liste → position pas encore recalée
+  const [addressDirty, setAddressDirty] = useState(false);
   if (!trip) return null;
   const p = trip.params;
 
@@ -90,6 +93,32 @@ export function SettingsPanel({ onClose }: { onClose: () => void }) {
         <h2 className="text-base font-semibold">⚙️ Réglages du séjour</h2>
         <button onClick={onClose} className="px-2 py-1 rounded hover:bg-white/10 text-white/60" title="Fermer">✕</button>
       </div>
+
+      <fieldset className="space-y-2">
+        <legend className="text-sm font-semibold mb-1">🛏️ Hôtel</legend>
+        <div>
+          <span className={label}>Nom</span>
+          <input className={input} placeholder="ex : Park Plaza London Waterloo"
+            value={trip.hotel.title}
+            onChange={(e) => update((t) => ({ ...t, hotel: { ...t.hotel, title: e.target.value } }))} />
+        </div>
+        <div>
+          <span className={label}>Adresse (la carte suit)</span>
+          <PlaceSearch
+            value={trip.hotel.address ?? ''}
+            located={!addressDirty}
+            placeholder="Adresse ou nom de l'hôtel…"
+            onChangeText={(address) => {
+              setAddressDirty(true);
+              update((t) => ({ ...t, hotel: { ...t.hotel, address: address || undefined } }));
+            }}
+            onSelect={(pl) => {
+              setAddressDirty(false);
+              update((t) => ({ ...t, hotel: { ...t.hotel, address: pl.title, lat: pl.lat, lng: pl.lng } }));
+            }}
+          />
+        </div>
+      </fieldset>
 
       <EndpointForm title="🛬 Arrivée" endpoint={p.arrival}
         onChange={(arrival) => setParams((pp) => ({ ...pp, arrival }))} />

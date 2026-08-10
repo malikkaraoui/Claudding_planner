@@ -11,3 +11,6 @@ Schéma v3 : ajout `params` (arrival/departure {mode, lieu géocodé, date, heur
 
 ## 2026-08-10 — Bouton − dans la barre du haut
 Suppression du jour actif directement depuis la TopBar (à côté du +), avec confirmation, sans passer par l'éditeur de jour. Désactivé s'il ne reste qu'un jour. Vérifié en headless : ajout Jour 5 → suppression → retour à 4 jours.
+
+## 2026-08-10 — Hôtel éditable (nom + adresse géocodée)
+Section 🛏️ Hôtel dans le volet Réglages : nom libre + adresse avec autocomplétion Nominatim ; la sélection d'un résultat recale lat/lng (le marqueur carte suit). Champ `hotel.address` optionnel — pas de migration nécessaire. Vérifié en headless : nom + « citizenM Tower of London » → coords 51.510/-0.076 persistées.
