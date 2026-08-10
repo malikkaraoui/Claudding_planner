@@ -8,3 +8,6 @@ Carte par jour + volet activités, état `data/trip.json` + mini-API Vite, geoco
 
 ## 2026-08-10 — V2 : phase de paramétrage (arrivée/départ, voyageurs, but, transports)
 Schéma v3 : ajout `params` (arrival/departure {mode, lieu géocodé, date, heure}, travelers, purpose, transportPrefs avec seuil marche). Volet Réglages dans l'UI, autocomplétion de lieux via `/api/geocode` (portée élargie hors Londres pour les aéroports/gares/ports). Migration douce des trip.json v2 existants.
+
+## 2026-08-10 — Bouton − dans la barre du haut
+Suppression du jour actif directement depuis la TopBar (à côté du +), avec confirmation, sans passer par l'éditeur de jour. Désactivé s'il ne reste qu'un jour. Vérifié en headless : ajout Jour 5 → suppression → retour à 4 jours.

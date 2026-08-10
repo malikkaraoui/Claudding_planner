@@ -59,10 +59,16 @@ export default function App() {
     });
   };
 
+  const removeDay = () => {
+    if (trip.days.length <= 1) return;
+    if (!window.confirm(`Supprimer ${day.label} ? Les activités redeviennent disponibles.`)) return;
+    update((t) => ({ ...t, days: t.days.filter((d) => d.id !== day.id) }));
+  };
+
   return (
     <div className="h-full flex flex-col">
       <TopBar activeDayId={day.id} onSelectDay={setActiveDayId} onAddDay={addDay}
-        onOpenSettings={() => setShowSettings(true)} />
+        onRemoveDay={removeDay} onOpenSettings={() => setShowSettings(true)} />
       {error && (
         <div className="bg-red-500/20 text-red-200 text-xs px-4 py-1">{error}</div>
       )}

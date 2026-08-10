@@ -7,10 +7,11 @@ interface Props {
   activeDayId: string;
   onSelectDay: (id: string) => void;
   onAddDay: () => void;
+  onRemoveDay: () => void;
   onOpenSettings: () => void;
 }
 
-export function TopBar({ activeDayId, onSelectDay, onAddDay, onOpenSettings }: Props) {
+export function TopBar({ activeDayId, onSelectDay, onAddDay, onRemoveDay, onOpenSettings }: Props) {
   const { trip } = useTrip();
   if (!trip) return null;
   const p = trip.params;
@@ -52,6 +53,14 @@ export function TopBar({ activeDayId, onSelectDay, onAddDay, onOpenSettings }: P
           className="px-2.5 py-1.5 rounded-lg text-white/60 hover:bg-white/10 border border-white/10 text-sm"
         >
           +
+        </button>
+        <button
+          onClick={onRemoveDay}
+          disabled={trip.days.length <= 1}
+          title="Supprimer le jour actif (les activités redeviennent disponibles)"
+          className="px-2.5 py-1.5 rounded-lg text-white/60 hover:bg-red-500/20 hover:text-red-300 border border-white/10 text-sm disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-white/60"
+        >
+          −
         </button>
         <button
           onClick={onOpenSettings}
