@@ -17,3 +17,6 @@ Section 🛏️ Hôtel dans le volet Réglages : nom libre + adresse avec autoco
 
 ## 2026-08-10 — Distance totale par journée
 `computeDay` expose `totalKm` (boucle hôtel → activités → hôtel, détour urbain inclus) et `walkKm` (segments à pied uniquement). Affiché dans le pied de l'itinéraire : « 📏 X km (dont 🚶 Y km) ». Vérifié en headless : J1 = 5,4 km dont 2,7 à pied, cohérent avec la somme des segments.
+
+## 2026-08-11 — Documentation consolidée
+README GitHub à jour (réglages, hôtel, boutons +/−, distance journée). Ajout de CLAUDE.md projet (architecture, règles de travail, boucle livrer→vérifier→pousser). Vault (brief, roadmap) synchronisé avec l'état réel. Mémoire persistante de session initialisée.

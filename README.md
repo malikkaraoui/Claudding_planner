@@ -44,6 +44,7 @@ Tout est modifiable dans le JSON : jours (ajout/suppression, `date`, `label`, `w
 
 Le bouton ⚙️ de la barre du haut ouvre le volet Réglages. Ces champs servent avant tout de **contexte à un LLM** pour rendre ses propositions pertinentes (ex. : pas de visite à 7 km à pied si le but est le repos avec des enfants < 10 ans) :
 
+- **Hôtel** : nom et adresse éditables (autocomplétion — le marqueur carte et les temps de trajet suivent la nouvelle position).
 - **Arrivée / Départ** : mode (✈️ avion, 🚆 train, 🚌 bus, 🚗 voiture, ⛴️ bateau), **lieu** (aéroport, gare, port… champ avec autocomplétion — la localisation `lat`/`lng` est déduite automatiquement via Nominatim), date et heure.
 - **Voyageurs** : nombre de personnes + composition en texte libre (ex. « 2 adultes, 2 enfants de 6 et 9 ans »).
 - **But du séjour** (optionnel) : repos, culture, famille… — oriente les choix de visite que le LLM peut proposer.
@@ -52,9 +53,17 @@ Le bouton ⚙️ de la barre du haut ouvre le volet Réglages. Ces champs serven
 
 Côté API : `GET /api/geocode?q=…` cherche dans Londres ; ajouter `&scope=global` pour une recherche mondiale (aéroports/gares hors de la ville). Les `trip.json` v2 existants sont **migrés automatiquement** (schéma v3, valeurs par défaut du séjour) au premier `GET /api/trip`.
 
+## Jours
+
+- **+** dans la barre du haut : ajoute un jour à la suite du dernier.
+- **−** : supprime le jour actif (confirmation demandée, les activités redeviennent disponibles ; désactivé s'il ne reste qu'un jour).
+- « ⚙️ Modifier le jour » dans l'itinéraire : nom, date, fenêtre horaire, budget, note.
+
 ## Heuristique temps de parcours (cf. cahier des charges §5)
 
 Distance haversine × 1,3 (détour urbain), marche 13 min/km ; au-delà de 2,5 km → « 🚇 métro conseillé » (15 min + 3 min/km), segment en pointillés sur la carte. Coefficients ajustables dans `settings`.
+
+Le pied de l'itinéraire affiche le résumé de la journée : temps d'activités + temps de trajets, **distance totale de la boucle** hôtel → activités → hôtel (📏, détour urbain inclus) avec la part faite à pied (🚶), et la jauge de budget temps.
 
 ## Documentation projet
 

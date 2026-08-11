@@ -3,15 +3,10 @@
 ## Fait
 - **V1 (2026-08-10)** : carte Leaflet par jour, itinéraire ordonné, heuristique marche/métro, jauges de budget temps, catalogue + ajout manuel avec geocode Nominatim, état dans `data/trip.json` pilotable front + terminal.
 - **Publication GitHub** (2026-08-10) : repo `malikkaraoui/Claudding_planner`, branche `main`.
-
-## En cours — V2 : phase de paramétrage du séjour
-But : donner du **contexte au LLM** pour des propositions pertinentes.
-- Arrivée : mode (avion, train, bus, voiture, bateau), lieu (aéroport, gare, port… autocomplétion geocode → lat/lng déduits), date, heure.
-- Départ : idem.
-- Nombre de personnes dans le séjour + note voyageurs (ex. « 2 adultes, 2 enfants de 6 et 9 ans »).
-- But du séjour (optionnel) : repos, culture, famille, romantique… — oriente les choix de visite du LLM.
-- Préférences de transport : taxi, bus, uber, métro, à pied (sous un seuil km, défaut 3 km).
-- UI : volet « Réglages » accessible depuis la barre du haut.
+- **V2 — phase de paramétrage (2026-08-10)** : schéma v3 avec `params` (arrivée/départ {mode, lieu géocodé scope=global, date, heure}, voyageurs + composition, but du séjour, transports acceptés avec seuil marche 3 km), volet ⚙️ Réglages, migration douce v2→v3 persistée au GET.
+- **Hôtel éditable (2026-08-10)** : nom + adresse avec autocomplétion, lat/lng recalés (carte et trajets suivent).
+- **Bouton − (2026-08-10)** : suppression du jour actif depuis la barre du haut, avec confirmation.
+- **Distance par journée (2026-08-10)** : 📏 km total de la boucle + part 🚶 à pied dans le pied de l'itinéraire.
 
 ## Plus tard
 - Budget cible (global et/ou par jour) intégré au paramétrage.

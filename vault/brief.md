@@ -10,4 +10,4 @@
 
 **Docs faisant foi** : `cahier-des-charges-planificateur-londres.md` (spec V1), `README.md` (usage + pilotage terminal), `vault/roadmap.md` (suite).
 
-**État (2026-08-10)** : V1 livrée et testée (typecheck, API, geocode Nominatim, modale de surcharge, synchro terminal→navigateur vérifiée par screenshot headless). Publication GitHub + phase de paramétrage en cours (voir roadmap et log).
+**État (2026-08-11)** : V1 livrée et testée. Publiée sur GitHub. V2 livrée : phase de paramétrage (volet ⚙️ Réglages — arrivée/départ géocodés, voyageurs, but du séjour, préférences transport), hôtel éditable (nom + adresse géocodée), bouton − de suppression du jour actif, distance totale par journée (📏 total + part 🚶 à pied). Reste (roadmap) : budget cible, génération LLM du plan, ancrage des jours 1/N sur les heures d'arrivée/départ.
